@@ -58,7 +58,7 @@ function App() {
         }}
       >
         <div style={{ fontSize: 1 }}>
-          Generated Color: {`${colour} ${colourHex}`}
+          Generated Color: {colourHex}
           <br />
         </div>
         <div

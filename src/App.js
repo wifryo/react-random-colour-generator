@@ -57,7 +57,7 @@ function App() {
           backgroundColor: colourHex,
         }}
       >
-        <div style={{ fontSize: 1 }}>
+        <div style={{ fontSize: 1, backgroundColor: colourHex }}>
           Generated Color: {colourHex}
           <br />
         </div>

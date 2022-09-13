@@ -1,5 +1,6 @@
+/** @jsxImportSource @emotion/react */
 import './App.css';
-import { ClassNames, css, Global, jsx } from '@emotion/react';
+import { css } from '@emotion/react';
 import invert from 'invert-color';
 import randomColor from 'randomcolor';
 import { useState } from 'react';
@@ -7,13 +8,26 @@ import { useState } from 'react';
 function randomItem(items) {
   return items[Math.floor(Math.random() * items.length)];
 }
-
+const mainStyle = css`
+  text-align: center;
+  align-items: center;
+`;
+const headerStyle = css`
+  margin: '200 auto';
+  display: 'flex';
+`;
+const colourTransition = css`
+  transition: background-color 0.5s ease-in;
+`;
 function App() {
   const [colour, setColour] = useState('');
   const [colourHex, setColourHex] = useState('');
   const [inverseColour, setInverseColour] = useState('');
   const [luminosity, setLuminosity] = useState('');
   const [hue, setHue] = useState('');
+  const [height, setHeight] = useState(150);
+  const [newHeight, setNewHeight] = useState(150);
+  const [width, setWidth] = useState(450);
   const colourChoices = [
     'red',
     'orange',
@@ -25,32 +39,21 @@ function App() {
     'monochrome',
   ];
 
+  const heightPx = height + 'px';
+  const widthPx = width + 'px';
   return (
-    <div className="App">
-      <h1
-        style={{
-          margin: '0 auto',
-          display: 'flex',
-          justifyContent: 'center',
-          alignItems: 'center',
-        }}
-      >
-        Random Colour Generator
-      </h1>
-      <br />
+    <div css={mainStyle}>
+      <h1 css={headerStyle}>Random Colour Generator</h1>
+
       <div
-        className="colourTransition"
+        css={colourTransition}
         style={{
-          width: 450,
-          height: 200,
           margin: '0 auto',
-          display: 'flex',
           padding: '50px',
-          justifyContent: 'center',
-          alignItems: 'center',
           fontSize: 50,
-          border: '1px solid black',
           borderRadius: 25,
+          height: heightPx,
+          width: widthPx,
           backgroundColor: colourHex,
         }}
       >
@@ -59,7 +62,7 @@ function App() {
           <br />
         </div>
         <div
-          className="colourTransition"
+          css={colourTransition}
           style={{ fontSize: 50, color: inverseColour }}
         >
           Generated Colour: {`${colour} ${colourHex}`}
@@ -78,7 +81,8 @@ function App() {
           onClick={() => {
             // the problem is that the hue is set from the previous loop
             let newColour = randomItem(colourChoices);
-            if (hue.length > 0) {
+
+            if (hue.length > 1) {
               setColour(hue);
               newColour = hue;
             } else {
@@ -90,6 +94,8 @@ function App() {
             });
             setColourHex(newColourHex);
             setInverseColour(invert(newColourHex));
+            setHeight(newHeight);
+            setWidth(newHeight * 2 + 200);
           }}
         >
           Generate
@@ -97,34 +103,44 @@ function App() {
       </div>
       <br />
       <div>
-        <input
-          placeholder="Input hue here"
-          value={hue}
+        <select
           onChange={(event) => {
             setHue(event.currentTarget.value);
           }}
-        />
+        >
+          <option value="">random hue</option>
+          <option value="red">red</option>
+          <option value="orange">orange</option>
+          <option value="yellow">yellow</option>
+          <option value="green">green</option>
+          <option value="blue">blue</option>
+          <option value="purple">purple</option>
+          <option value="pink">pink</option>
+          <option value="monochrome">monochrome</option>
+        </select>
         <br />
-        <input
-          placeholder="Input luminosity here"
-          value={luminosity}
+
+        <select
           onChange={(event) => {
             setLuminosity(event.currentTarget.value);
           }}
-        />
-        <div
-          css={css`
-            padding: 32px;
-            background-color: hotpink;
-            font-size: 500px;
-            border-radius: 4px;
-            &:hover {
-              color: yellow;
-            }
-          `}
         >
-          Hover to change color.
-        </div>
+          <option value=" ">random luminosity</option>
+          <option value="bright">bright</option>
+          <option value="light">light</option>
+          <option value="dark">dark</option>
+        </select>
+        <br />
+        <select
+          onChange={(event) => {
+            setNewHeight(event.currentTarget.value);
+            console.log(`newheight2= ${newHeight}`);
+          }}
+        >
+          <option value="200">default size</option>
+          <option value="300">big</option>
+          <option value="500">megabig</option>
+        </select>
       </div>
     </div>
   );
